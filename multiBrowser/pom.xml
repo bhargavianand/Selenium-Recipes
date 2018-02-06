@@ -2,20 +2,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>labs.vish</groupId>
-	<artifactId>multiBrowserInstances</artifactId>
+	<artifactId>multiBrowser</artifactId>
 	<version>0.0.1</version>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8
-		</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8
-		</project.reporting.outputEncoding>
-
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- Dependency versions -->
-		<selenium.version>3.8.1</selenium.version>
-
+		<selenium.version>3.5.3</selenium.version>
 		<!-- Configurable variables -->
-		<threads>1</threads>
+		<threads>5</threads>
+		<browser>firefox</browser>
 	</properties>
 
 	<build>
@@ -23,12 +20,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.17</version>
+				<version>2.18.1</version>
 				<configuration>
 					<parallel>methods</parallel>
 					<threadCount>${threads}</threadCount>
+					<systemProperties>
+						<browser>${browser}</browser>
+					</systemProperties>
 					<includes>
-						<include>**/*Test.java</include>
+						<include>BaseTest.java</include>
 					</includes>
 				</configuration>
 				<executions>
@@ -58,9 +58,8 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.8</version>
+			<version>6.13.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 </project>
