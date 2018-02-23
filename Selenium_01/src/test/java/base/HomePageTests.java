@@ -1,6 +1,9 @@
 package base;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class HomePageTests extends BaseTest {
@@ -9,8 +12,25 @@ public class HomePageTests extends BaseTest {
 			description = "TEST APPLE",
 			groups = {"SmokeTest", "RegressionTest", "SystemTest"})
 	public void googleApple() {		
-		driver.findElement(By.cssSelector("input[id='lst-ib']")).sendKeys("apple", Keys.ENTER);
+		printTCStep("Wait for search bar to display");
+		explicitWait = new  WebDriverWait(driver, 5);
+		explicitWait.until(ExpectedConditions.elementToBeClickable(By
+			.cssSelector("input[id='lst-ib']")));
 		printTCStep("Search for apple");
+		driver.findElement(By.cssSelector("input[id='lst-ib']")).sendKeys("apple", Keys.ENTER);	
+		printTCStep("Wait for search results");
+		explicitWait.until(ExpectedConditions.elementToBeClickable(By
+			.cssSelector("div[id='resultStats']")));
+		printTCStep("Check if Apple result is displayed as main");
+		String text = driver.findElement(By
+			.cssSelector("div[class='med']:nth-child(2) div[class='_NId']:nth-child(1) div:nth-child(1)>h3"))
+			.getText();
+		try {
+			Assert.assertEquals(text.toLowerCase(), "apples", "apple not displayed");
+		} catch (AssertionError t) {
+			Assert.fail("Expected apples, but got " + text);
+		}
+				
 	}
 	
 	@Test(	priority = 1, 

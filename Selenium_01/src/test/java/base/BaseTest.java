@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterGroups;
@@ -21,13 +22,13 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class BaseTest {
 
 	public static WebDriver driver;
+	public static WebDriverWait explicitWait;
 	
 	@BeforeSuite(alwaysRun = true)
 	public void beforeSuite() {		
 		WebDriverManager.chromedriver().setup();		
 		driver = new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.get("http://www.google.com");
+		driver.manage().window().maximize();	
 	}
 	
 	@AfterSuite(alwaysRun = true)
@@ -40,6 +41,7 @@ public class BaseTest {
 	public void beforeTest() {
 		// NOP
 		driver.manage().deleteAllCookies();
+		
 	}
 	
 	@AfterTest(alwaysRun = true)
@@ -69,11 +71,12 @@ public class BaseTest {
 	
 	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod(ITestContext ctx, Method method) {
+		System.out.println("-------------------------------------------------------------------------------");
 		System.out.println("TEST CASE START ---------------------------------------------------------------");
 		System.out.println(" Suite		: " + ctx.getCurrentXmlTest().getSuite().getName());
 		System.out.println(" Test Group	: " + ctx.getName());
-		System.out.println(" Test Case 	: " + method.getName());
-		System.out.println("-------------------------------------------------------------------------------");
+		System.out.println(" Test Case 	: " + method.getName());		
+		driver.get("http://www.google.com");
 	}
 	
 	@AfterMethod
@@ -82,7 +85,7 @@ public class BaseTest {
 	}
 	
 	public static void printTCStep(String output){
-		System.out.println("   >>> STEP >>> " + output + "...");
+		System.out.println(">>> STEP >>> " + output + "...");
 	}
 	
 }
