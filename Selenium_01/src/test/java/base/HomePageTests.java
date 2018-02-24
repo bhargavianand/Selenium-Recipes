@@ -1,10 +1,16 @@
 package base;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class HomePageTests extends BaseTest {
 		
@@ -26,7 +32,7 @@ public class HomePageTests extends BaseTest {
 			.cssSelector("div[class='med']:nth-child(2) div[class='_NId']:nth-child(1) div:nth-child(1)>h3"))
 			.getText();
 		try {
-			Assert.assertEquals(text.toLowerCase(), "apples", "apple not displayed");
+			Assert.assertEquals(text.toLowerCase(), "apple", "apple not displayed");
 		} catch (AssertionError t) {
 			Assert.fail("Expected apples, but got " + text);
 		}
@@ -36,9 +42,27 @@ public class HomePageTests extends BaseTest {
 	@Test(	priority = 1, 
 			description = "TEST BANANA",
 			groups = {"SmokeTest", "RegressionTest", "SystemTest"})
-	public void googleBanana() {		
-		driver.findElement(By.cssSelector("input[id='lst-ib']")).sendKeys("banana", Keys.ENTER);
-		printTCStep("Search for banana");		
+	public void googleBanana() {
+		printTCStep("Wait for search bar to display");
+		fluentWait = new FluentWait<WebDriver>(driver)
+			.withTimeout(30, TimeUnit.SECONDS)
+			.pollingEvery(5, TimeUnit.SECONDS)
+			.ignoring(NoSuchMethodException.class);
+		WebElement searchBar = fluentWait.until(new Function<WebDriver, WebElement>() {
+			public WebElement apply(WebDriver driver) {
+				return driver.findElement(By.cssSelector("input[id='lst-ib']"));
+			}
+		});
+		
+		printTCStep("Search for banana");
+		searchBar.sendKeys("banana", Keys.ENTER);
+		printTCStep("Wait for search results");
+		explicitWait = new  WebDriverWait(driver, 5);
+		explicitWait.until(ExpectedConditions.elementToBeClickable(By
+			.cssSelector("div[id='resultStats']")));
+		String text = driver.findElement(By.cssSelector("div[id='search'] div[class='_NId']:nth-child(1) h3:nth-child(1)>a")).getText();
+		Assert.assertTrue(text.toLowerCase().contains("bananai"), "Expected text to contain bananai, but got " + text);
+		
 	}
 	
 	@Test(	priority = 2, 
