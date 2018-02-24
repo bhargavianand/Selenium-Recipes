@@ -16,6 +16,7 @@ import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.openqa.selenium.support.ui.Wait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -23,6 +24,7 @@ public class BaseTest {
 
 	public static WebDriver driver;
 	public static WebDriverWait explicitWait;
+	public static Wait<WebDriver> fluentWait;
 	
 	@BeforeSuite(alwaysRun = true)
 	public void beforeSuite() {		
