@@ -4,6 +4,6 @@
 
 /test-output/
 /.project
-/base.properties
+*.properties
 
 /.vscode
