@@ -64,8 +64,6 @@ public class BaseTest {
             break;
 
         case "chrome":
-            // WebDriverManager.chromedriver().setup();
-            // driver = new ChromeDriver();
             System.setProperty("webdriver.chrome.driver", "C:\\gecko\\chromedriver.exe");
             capabilities = new DesiredCapabilities();
             capabilities.setBrowserName("chrome");
@@ -78,7 +76,6 @@ public class BaseTest {
             break;
 
         default:
-            //capabilities = new DesiredCapabilities().chrome();
             System.setProperty("webdriver.chrome.driver", "C:\\gecko\\chromedriver.exe");
             capabilities = new DesiredCapabilities();
             capabilities.setBrowserName("chrome");
@@ -98,7 +95,7 @@ public class BaseTest {
 	@AfterTest(alwaysRun = true)
 	public void afterTest() {
 		// NOP
-		driver.quit();
+		//driver.quit();
 	}
 
 	@BeforeGroups(alwaysRun = true)
@@ -123,6 +120,8 @@ public class BaseTest {
 
 	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod(ITestContext ctx, Method method) {
+		
+		
 		System.out.println("-------------------------------------------------------------------------------");
 		System.out.println("TEST CASE START ---------------------------------------------------------------");
 		System.out.println(" Suite		: " + ctx.getCurrentXmlTest().getSuite().getName());
